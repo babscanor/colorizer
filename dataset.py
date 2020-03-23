@@ -24,9 +24,9 @@ class PortraitsDataset(Dataset):
         colored_image_path = os.path.join(self.colored_root_dir, colored_image)
         image = cv2.imread(colored_image_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        image = cv2.resize(image,(256,256))
+        #image = cv2.resize(image,(256,256))
         image_np = np.array(image)
-        image_gray = torch.tensor(rgb2lab(1.0/255*image_np)[:,:,0]).reshape(1,256,256)
+        image_gray = torch.tensor(rgb2lab(1.0/255*image_np)[:,:,0]).reshape(1,64,64)
         image_colored = torch.tensor(rgb2lab(1.0/255*image_np)[:,:,1:]).permute(2, 0,1)
         sample = {'colored_image': image_colored, 'gray_image': image_gray}
         return sample
@@ -40,3 +40,6 @@ class PortraitsDataset(Dataset):
         axs[1].imshow(sample_in_gray, cmap = plt.cm.gray)
         plt.show()
 
+data = PortraitsDataset("pokemon_data")
+print(data.colored_images_paths)
+print(data.__getitem__(1))
